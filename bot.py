@@ -99,8 +99,6 @@ async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
     
-    
-    
     print(message.author, "在", message.channel, "說了", message.content)
     
     # 在訊息所在的頻道傳送訊息
@@ -113,11 +111,6 @@ async def on_message(message: discord.Message):
     # 內文包含"好飽"時
     elif "好飽" in msg:
         await message.channel.send("吃飯不揪= =")
-
-    elif "<:Bruh:1043195781475209316>" in msg:
-        await message.channel.send("<:MRVN_Pensive:1112096368559935520>")
-	
- 
 
  
  
