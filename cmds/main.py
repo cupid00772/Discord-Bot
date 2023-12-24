@@ -10,17 +10,8 @@ import requests
 from bs4 import BeautifulSoup as beau
 
 
-# 導入 setting.json
-setting_path = os.path.join('json', 'setting.json')
-with open(setting_path, 'r', encoding='utf8') as jfile:
-    jdata = json.load(jfile)
-
-# 導入 bdo_update.json
-update_path = os.path.join('json', 'Bdo_update.json')
-with open(update_path, 'r', encoding='utf8') as update:
-    update_data = json.load(update)
- 
- 
+with open('setting.json', 'r', encoding='utf8') as jfile:
+	jdata = json.load(jfile)
 # 儲存commands
 class Main(Cog_Extension):
 	'''
@@ -82,110 +73,20 @@ class Main(Cog_Extension):
 		else: await ctx.message.delete()
 		await ctx.send(content)
 
-	@commands.command(name='WT_news')
-	async def WTnews(self, ctx):
-		"""<<爬WTwiki網站 ex: !WT_news>>"""
 
-		# 讀取設定檔 load settings
-		with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
-			jdata = json.load(jfile)
+	@commands.command()
+	async def info(self, ctx):
+		embed = discord.Embed(title="About Discord-Bot", description="Made Bot Easier !", color=0x28ddb0)
+		# embed.set_thumbnail(url="#")
+		embed.add_field(name="開發者 Developers", value="ඞcupid00772ඞ (<@!327063062630629377>)", inline=False)
+		embed.add_field(name="源碼 Source", value="[Link](https://github.com/cupid00772/Discord-Bot)", inline=True)
+		embed.add_field(name="協助 Support Server", value="[Link](https://discord.gg/R75DXHH)" , inline=True)
+		embed.add_field(name="版本 Version", value="0.1.0 a", inline=False)
+		embed.add_field(name="Powered by", value="discord.py v{}".format(discord.__version__), inline=True)
+		embed.add_field(name="Prefix", value=jdata['Prefix'], inline=False)
+		embed.set_footer(text="Made with ❤")
+		await ctx.send(embed=embed)
 
-		# 目標網站 URL
-		url = jdata['url_WT']
-
-		# 發送 GET 請求並獲取網頁內容
-		response = requests.get(url)
-		soup = beau(response.text, 'html.parser')
-
-		# 使用 BeautifulSoup 尋找所有更新事項的 div 元素
-		articles = soup.find_all("div", class_="showcase__item widget")
-
-		# 創建一個空的列表，用於存儲每一則更新事項的資訊
-		data_list = []
-
-		# 迭代處理每一則更新事項的 div 元素
-		for a in articles:
-			# 創建一個字典，用於存儲每一則更新事項的資訊
-			data = {}
-			# 尋找標題元素
-			title = a.find("div", class_ = "widget__title")
-			
-			# 檢查是否找到標題元素以及標題元素中是否還包含 div 元素
-			if title : 
-				title = title.text 
-				
-			else:
-				# 如果沒有找到標題元素或標題元素中沒有 div 元素，設置標題為 "no title"
-				title = "no title"
-			# 將標題存入字典
-			data["title"] = title.strip()
-			# 將包含更新事項資訊的字典添加到列表中
-
-			
-
-			# 尋找日期元素
-			date = a.find("li", class_ = "widget-meta__item widget-meta__item--right")
-			# 檢查是否找到標題元素以及標題元素中是否還包含 div 元素
-			if date :
-				date = date.text
-			else:
-				# 如果沒有找到標題元素或標題元素中沒有 div 元素，設置標題為 "no title"
-				date = "no date"
-			# 將標題存入字典
-			data["date"] = date.strip()
-			# 將包含更新事項資訊的字典添加到列表中
-			data_list.append(data)
-
-		# 將更新事項資訊的列表存入 json 檔案
-		with open("D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\WT_update.json", "w", encoding="utf-8") as f:
-			json.dump(data_list, f, ensure_ascii=False, indent=4)
-
-		for i in data_list:
-			await ctx.send(f"[更新事項] {i.get('title', 'no title')}，[日期] {i.get('date', 'no date')}")
-
-	@commands.command(name='BDO_update', aliases=['BDO'])
-	async def BDO_update(self, ctx):
-		"""<<黑色沙漠更新 ex: !BDO_update>>"""
-		
-		url = jdata['url_Bdo']
-		# 發送 GET 請求並獲取網頁內容
-		response = requests.get(url)
-		
-		# 檢查是否成功獲取網頁內容
-		if response and response.status_code == 200:
-			soup = beau(response.text, 'html.parser')
-
-		# 使用 BeautifulSoup 尋找所有更新事項的 div 元素
-		articles = soup.find_all("div" , class_="desc_area")
-
-		# 創建一個空的列表，用於存儲每一則更新事項的資訊
-		data_list = []
-
-		# 迭代處理每一則更新事項的 div 元素
-		for span in articles:
-			data = {}
-			title = span.find("strong" , class_="title")
-			if title and title.span:
-				title = title.span.text
-				if title == "":
-					title = title.strip()
-				else:
-					data["更新事項"] = title
-					data_list.append(data)
-			else:
-				title = "no title"
-				data["更新事項"] = title
-
-		# 將更新事項資訊的列表存入 json 檔案
-		with open("D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\Bdo_update.json", "w", encoding="utf-8") as f:
-			json.dump(data_list, f, ensure_ascii=False, indent=4)
-
-		name = "更新事項"
-		for i in data_list:
-			await ctx.send(f"[更新事項] {i[name]} ")
-
-
-	
 
 async def setup(bot):
 	await bot.add_cog(Main(bot))

@@ -36,7 +36,11 @@ class Global_Func():
                 if type == 'list':
                     jdata[key].remove(data)
                 
+<<<<<<< HEAD
         with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\yy', 'w', encoding='utf8') as jfile:
+=======
+        with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'w', encoding='utf8') as jfile:
+>>>>>>> a2ea8bc837a1132d90e66ead60693c7c58d3db7b
             json.dump(jdata, jfile, indent=4, ensure_ascii=False)
     
     

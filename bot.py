@@ -8,6 +8,11 @@ from core.classes import Cog_Extension
 import json
 # 引入 Python 的 os 模組（用於與系統交互）和 asyncio 模組（用於非同步操作）
 import os, asyncio
+<<<<<<< HEAD
+=======
+# 用來產生隨機數字
+import random
+>>>>>>> a2ea8bc837a1132d90e66ead60693c7c58d3db7b
 
 
 """
