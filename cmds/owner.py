@@ -41,5 +41,5 @@ class Owner(Cog_Extension):
 		await asyncio.sleep(1)
 		await self.bot.logout()
 
-def setup(bot):
-   bot.add_cog(Owner(bot))
+async def setup(bot):
+   await bot.add_cog(Owner(bot))

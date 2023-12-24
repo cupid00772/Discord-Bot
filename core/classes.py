@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
 import json, datetime
-
+# 放所有的類別(class)
 class Cog_Extension(commands.Cog):
     """用於Cog繼承基本屬性"""
+    #初始化(initialization)
     def __init__(self, bot):
         self.bot = bot
 

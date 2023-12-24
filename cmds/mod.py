@@ -26,5 +26,5 @@ class Mod(Cog_Extension):
             await ctx.send(content=Global_Func.code(lang='fix', msg=f'已清理 {num} 則訊息.\nReason: {reason}'), delete_after=5.0)
 
 
-def setup(bot):
-   bot.add_cog(Mod(bot))
+async def setup(bot):
+   await bot.add_cog(Mod(bot))

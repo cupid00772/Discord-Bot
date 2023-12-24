@@ -2,18 +2,18 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 from core import check
-import json
+import json, asyncio, os
 import os, random
+
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
 	jdata = json.load(jfile)
-
+# 儲存commands
 class Main(Cog_Extension):
-
 	'''
 	等待使用者回覆檢查 (需要時複製使用)
 	async def user_respone():
-		def check(m):
+		def check(m):y
 			return m.author == ctx.author and m.channel == ctx.channel
 		respone = await self.bot.wait_for('message', check=check)
 		return respone
@@ -32,7 +32,30 @@ class Main(Cog_Extension):
 	async def test(self, ctx):
 		'''有效人員 指令權限測試'''
 		await ctx.send('Bee! Bo!')
+	
+	# 加減乘除
+	@commands.command(name='cal')
+	async def calculate(self, ctx, a: float, symbol: str, b: float):
+		operators = {"+": (a + b), "-": (a - b), "*": (a * b), "x": (a * b), "/": (a / b)}
 		
+		if symbol in operators:
+			result = operators[symbol]
+			await ctx.send(f'The result is : {result}')
+		else:
+			await ctx.send('Invalid operator. Please use "+", "-", "*", or "/".')
+
+
+	# 倒數計時器
+	@commands.command()
+	async def countdown(self, ctx, num_sec: int):
+		while num_sec > 0:
+			m, s = divmod(num_sec, 60)
+			min_sec_format = "{:02d}:{:02d}".format(m, s)
+			await ctx.send(min_sec_format)
+			await asyncio.sleep(1)
+			num_sec -= 1
+		await ctx.send("Countdown finished.")
+		await ctx.send(f"Response Time : {round(self.bot.latency*1000)} ms !")
 
 	@commands.command()
 	async def sayd(self, ctx, *, content: str):
@@ -58,5 +81,5 @@ class Main(Cog_Extension):
 		await ctx.send(embed=embed)
 
 
-def setup(bot):
-	bot.add_cog(Main(bot))
+async def setup(bot):
+	await bot.add_cog(Main(bot))
