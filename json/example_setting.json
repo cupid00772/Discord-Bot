@@ -2,5 +2,11 @@
     "TOKEN": "your token",
     "Prefix": ["your Prefix"],
     "Owner_id": ["your discord id"],
-    "Valid_User": []
+    "Valid_User": [],
+    "Channel_join": "1188025578880770078",
+    "Channel_leave": "1188025616008761384",
+    "Channel_welcome_bot": "1188333350088355880",
+    "MRVN_Passive": "https://cdn.discordapp.com/emojis/1112096368559935520.webp?size=128&quality=lossless",
+    "url_Bdo": "https://www.tw.playblackdesert.com/News/Notice?boardType=2",
+    "url_WT": "https://warthunder.com/en/news"
 }
