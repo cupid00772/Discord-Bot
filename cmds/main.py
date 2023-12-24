@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
-from core.classes import Cog_Extension
 from core import check
+from core.classes import Cog_Extension
+
 import json, asyncio, os
 
 # 爬蟲所需
@@ -9,11 +10,14 @@ import requests
 from bs4 import BeautifulSoup as beau
 
 
-# 導入setting.json
-with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
-	jdata = json.load(jfile)
-# 導入bdo_update.json
-with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\Bdo_update.json' , mode = 'r' , encoding='utf8') as update:
+# 導入 setting.json
+setting_path = os.path.join('json', 'setting.json')
+with open(setting_path, 'r', encoding='utf8') as jfile:
+    jdata = json.load(jfile)
+
+# 導入 bdo_update.json
+update_path = os.path.join('json', 'Bdo_update.json')
+with open(update_path, 'r', encoding='utf8') as update:
     update_data = json.load(update)
  
  
@@ -78,7 +82,6 @@ class Main(Cog_Extension):
 		else: await ctx.message.delete()
 		await ctx.send(content)
 
-
 	@commands.command(name='WT_news')
 	async def WTnews(self, ctx):
 		"""<<爬WTwiki網站 ex: !WT_news>>"""
@@ -101,29 +104,35 @@ class Main(Cog_Extension):
 		data_list = []
 
 		# 迭代處理每一則更新事項的 div 元素
-		for div in articles:
+		for a in articles:
 			# 創建一個字典，用於存儲每一則更新事項的資訊
 			data = {}
-
 			# 尋找標題元素
-			title_element = div.find("div", class_="widget__content")
-			# 尋找日期元素
-			date_element = div.find("ul", class_="widget__meta widget-meta")
-
+			title = a.find("div", class_ = "widget__title")
+			
 			# 檢查是否找到標題元素以及標題元素中是否還包含 div 元素
-			if title_element and title_element.div:
-				# 提取標題文字，並清理空白
-				title_text = title_element.div.text.strip()
-				# 將標題存入字典
-				data["title"] = title_text
+			if title : 
+				title = title.text 
+				
+			else:
+				# 如果沒有找到標題元素或標題元素中沒有 div 元素，設置標題為 "no title"
+				title = "no title"
+			# 將標題存入字典
+			data["title"] = title.strip()
+			# 將包含更新事項資訊的字典添加到列表中
 
-			# 檢查是否找到日期元素以及日期元素中是否還包含 div 元素
-			if date_element and date_element.div:
-				# 提取日期文字，並清理空白
-				date_text = date_element.div.text.strip()
-				# 將日期存入字典
-				data["date"] = date_text
+			
 
+			# 尋找日期元素
+			date = a.find("li", class_ = "widget-meta__item widget-meta__item--right")
+			# 檢查是否找到標題元素以及標題元素中是否還包含 div 元素
+			if date :
+				date = date.text
+			else:
+				# 如果沒有找到標題元素或標題元素中沒有 div 元素，設置標題為 "no title"
+				date = "no date"
+			# 將標題存入字典
+			data["date"] = date.strip()
 			# 將包含更新事項資訊的字典添加到列表中
 			data_list.append(data)
 
@@ -134,49 +143,38 @@ class Main(Cog_Extension):
 		for i in data_list:
 			await ctx.send(f"[更新事項] {i.get('title', 'no title')}，[日期] {i.get('date', 'no date')}")
 
-	@commands.command(name='bdo_update', aliases=['bdo'])
-	async def 黑沙更新(self, ctx):
-		"""<<黑色沙漠更新 ex: !bdo_update>>"""
+	@commands.command(name='BDO_update', aliases=['BDO'])
+	async def BDO_update(self, ctx):
+		"""<<黑色沙漠更新 ex: !BDO_update>>"""
 		
-		# 讀取設定檔 load settings
-		with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
-			jdata = json.load(jfile)
-		
-		# 目標網站 URL
-		url = str(jdata['url_Bdo'])
-
+		url = jdata['url_Bdo']
 		# 發送 GET 請求並獲取網頁內容
 		response = requests.get(url)
-		soup = beau(response.text, 'html.parser')
+		
+		# 檢查是否成功獲取網頁內容
+		if response and response.status_code == 200:
+			soup = beau(response.text, 'html.parser')
 
 		# 使用 BeautifulSoup 尋找所有更新事項的 div 元素
-		articles = soup.find_all("div", class_="desc_area")
+		articles = soup.find_all("div" , class_="desc_area")
 
 		# 創建一個空的列表，用於存儲每一則更新事項的資訊
 		data_list = []
 
 		# 迭代處理每一則更新事項的 div 元素
 		for span in articles:
-			# 創建一個字典，用於存儲每一則更新事項的資訊
 			data = {}
-			
-			# 尋找標題元素
-			title_element = span.find("strong", class_="title")
-			
-			# 檢查是否找到標題元素以及標題元素中是否還包含 span 元素
-			if title_element and title_element.span:
-				# 提取標題文字，並清理空白
-				title_text = title_element.span.text.strip()
-				
-				# 將標題存入字典
-				data["更新事項"] = title_text
-				
-				# 將包含更新事項資訊的字典添加到列表中
-				data_list.append(data)
+			title = span.find("strong" , class_="title")
+			if title and title.span:
+				title = title.span.text
+				if title == "":
+					title = title.strip()
+				else:
+					data["更新事項"] = title
+					data_list.append(data)
 			else:
-				# 如果沒有找到標題元素或標題元素中沒有 span 元素，設置標題為 "no title"
-				title_text = "no title"
-				data["更新事項"] = title_text
+				title = "no title"
+				data["更新事項"] = title
 
 		# 將更新事項資訊的列表存入 json 檔案
 		with open("D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\Bdo_update.json", "w", encoding="utf-8") as f:
@@ -185,7 +183,8 @@ class Main(Cog_Extension):
 		name = "更新事項"
 		for i in data_list:
 			await ctx.send(f"[更新事項] {i[name]} ")
-	
+
+
 	
 
 async def setup(bot):
