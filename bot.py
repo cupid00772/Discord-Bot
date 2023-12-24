@@ -89,11 +89,12 @@ async def reload(ctx, extension):
 
 
 # 從cmds資料夾裡面導入檔案裡面的commands
-for filename in os.listdir('./cmds'):
-    # 如果filename結尾為.py，就load裡面的commands
-    if filename.endswith('.py'):
-        bot.load_extension(f'cmds.{filename[:-3]}')
-# filename[:-3] ex: main.py -> main 
+async def load_extensions():
+    for filename in os.listdir('./cmds'):
+        # 如果filename結尾為.py，就load裡面的commands
+        if filename.endswith(".py"):
+            await bot.load_extension(f"cmds.{filename[:-3]}")
+# filename[:-3] ex: main.py -> main
 
         
 

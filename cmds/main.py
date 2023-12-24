@@ -23,19 +23,20 @@ class Main(Cog_Extension):
 
 	@commands.command()
 	async def ping(self, ctx):
-		'''Bot 延遲'''
+		'''<<Bot 延遲>>'''
 		await ctx.send(f'{round(self.bot.latency*1000)} ms')
 
 
 	@commands.command()
 	@check.valid_user() #檢查權限, 是否存在於效人員清單中, 否則無法使用指令
 	async def test(self, ctx):
-		'''有效人員 指令權限測試'''
+		'''<<有效人員 指令權限測試>>'''
 		await ctx.send('Bee! Bo!')
 	
-	# 加減乘除
+	
 	@commands.command(name='cal')
 	async def calculate(self, ctx, a: float, symbol: str, b: float):
+		"""<<加減乘除>>"""
 		operators = {"+": (a + b), "-": (a - b), "*": (a * b), "x": (a * b), "/": (a / b)}
 		
 		if symbol in operators:
@@ -45,9 +46,10 @@ class Main(Cog_Extension):
 			await ctx.send('Invalid operator. Please use "+", "-", "*", or "/".')
 
 
-	# 倒數計時器
+	
 	@commands.command()
 	async def countdown(self, ctx, num_sec: int):
+		"""<<倒數計時器>>"""
 		while num_sec > 0:
 			m, s = divmod(num_sec, 60)
 			min_sec_format = "{:02d}:{:02d}".format(m, s)
@@ -59,7 +61,7 @@ class Main(Cog_Extension):
 
 	@commands.command()
 	async def sayd(self, ctx, *, content: str):
-		'''訊息覆誦'''
+		'''<<訊息覆誦>>'''
 		if "@everyone" in content:
 			await ctx.send(f"{ctx.author.mention} 請勿標註 `everyone` !")
 			return
@@ -69,10 +71,10 @@ class Main(Cog_Extension):
 
 	@commands.command()
 	async def info(self, ctx):
-		embed = discord.Embed(title="About P_Base-Bot", description="Made Bot Easier !", color=0x28ddb0)
+		embed = discord.Embed(title="About Discord-Bot", description="Made Bot Easier !", color=0x28ddb0)
 		# embed.set_thumbnail(url="#")
-		embed.add_field(name="開發者 Developers", value="Proladon#7525 (<@!149772971555160064>)", inline=False)
-		embed.add_field(name="源碼 Source", value="[Link](https://github.com/Proladon/Proladon-DC_BaseBot)", inline=True)
+		embed.add_field(name="開發者 Developers", value="ඞcupid00772ඞ (<@!327063062630629377>)", inline=False)
+		embed.add_field(name="源碼 Source", value="[Link](https://github.com/cupid00772/Discord-Bot)", inline=True)
 		embed.add_field(name="協助 Support Server", value="[Link](https://discord.gg/R75DXHH)" , inline=True)
 		embed.add_field(name="版本 Version", value="0.1.0 a", inline=False)
 		embed.add_field(name="Powered by", value="discord.py v{}".format(discord.__version__), inline=True)
