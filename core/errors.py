@@ -4,7 +4,7 @@ from core.classes import Cog_Extension, Logger
 from cmds.main import Main #導入 Main Cog
 import json, asyncio
 
-with open('setting.json', 'r', encoding='utf8') as jfile:
+with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
    jdata = json.load(jfile)
 
 class Errors():
