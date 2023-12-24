@@ -25,7 +25,7 @@ class Global_Func():
         type: default / list
         mode: update / delete
         '''
-        with open('setting.json', 'r', encoding='utf8') as jfile:
+        with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
             jdata = json.load(jfile)
             if mode == 'update':
                 if type == 'default':
@@ -36,7 +36,7 @@ class Global_Func():
                 if type == 'list':
                     jdata[key].remove(data)
                 
-        with open('setting.json', 'w', encoding='utf8') as jfile:
+        with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'w', encoding='utf8') as jfile:
             json.dump(jdata, jfile, indent=4, ensure_ascii=False)
     
     

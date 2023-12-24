@@ -3,7 +3,7 @@ from discord.ext import commands
 from core.classes import Cog_Extension, Global_Func
 import json
 
-with open('setting.json', 'r', encoding='utf8') as jfile:
+with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
    jdata = json.load(jfile)
 
 class Mod(Cog_Extension):

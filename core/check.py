@@ -9,9 +9,10 @@ def valid_user():
 	回傳比對結果, 兩者皆不符合False, 符合其中一者True
 	'''
 	def predicate(ctx):
-		with open('setting.json', 'r', encoding='utf8') as jfile:
-		   jdata = json.load(jfile)
+		with open('D:\DiscordBot-Python\Discord_bot_Proladon\Discord-bot\json\setting.json', 'r', encoding='utf8') as jfile:
+			jdata = json.load(jfile)
 			
 		return ctx.message.author.id == jdata['Owner_id'] or ctx.message.author.id in jdata['Valid_User']
+
 
 	return commands.check(predicate) 
